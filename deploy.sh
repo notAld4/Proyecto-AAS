@@ -29,4 +29,4 @@ else
 	echo "Crendo volumen raid-vol" && docker volume create raid-vol
 fi
 
-docker-compose -f /home/c4rta/Documentos/Docker/docker-compose.yml up -d
+docker-compose -f /opt/docker-compose.yml up -d
