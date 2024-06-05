@@ -48,19 +48,19 @@ services:
       dns-net:
         ipv4_address: 10.10.10.7
 
-  servidor-samba:
-    image: c4rta/servidor-samba4:v1
-    volumes:
-      - raid-vol:/mnt/raid
-    networks:
-      dns-net:
-        ipv4_address: 10.10.10.5
-    hostname: dc.uefinet.mx
-    devices:
-       - "/dev/bus/usb:/dev/bus/usb"
-       - "/dev/md0:/dev/md0"
-    cap_add:
-       - SYS_ADMIN
+  #servidor-samba:
+  #  image: c4rta/servidor-samba4:v1
+  #  volumes:
+  #    - raid-vol:/mnt/raid
+  #  networks:
+  #    dns-net:
+  #      ipv4_address: 10.10.10.5
+  #  hostname: dc.uefinet.mx
+  #  devices:
+  #     - "/dev/bus/usb:/dev/bus/usb"
+  #     - "/dev/md0:/dev/md0"
+  #  cap_add:
+  #     - SYS_ADMIN
 
   router:
     image: c4rta/router:v1
