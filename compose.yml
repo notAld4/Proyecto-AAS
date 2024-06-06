@@ -1,0 +1,87 @@
+services:
+  servidor-dns:
+    image: servidor-dns
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.2
+
+  servidor-web:
+    image: servidor-web
+    ports:
+      - "80:80/tcp"
+      - "80:80/udp"
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.3
+    hostname: www.uefinet.mx
+
+  servidor-correo:
+    image: servidor-correo
+    ports:
+      - "995:995/tcp"
+      - "995:995/udp"
+      - "993:993/tcp"
+      - "993:993/udp"
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.4
+    hostname: mail.uefinet.mx
+
+  servidor-kerberos:
+    image: servidor-kerberos
+    ports:
+      - "88:88/tcp"
+      - "88:88/udp"
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.6
+    hostname: kdc.uefinet.mx
+
+  servidor-bd:
+    image: servidor-bd
+    volumes:
+      - base-datos-vol:/var/lib/mysql
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.7
+
+  servidor-samba:
+    image: servidor-samba4
+    volumes:
+      - raid-vol:/mnt/raid
+    networks:
+      dns-net:
+        ipv4_address: 10.10.10.5
+    hostname: dc.uefinet.mx
+    devices:
+       - "/dev/bus/usb:/dev/bus/usb"
+       - "/dev/md0:/dev/md0"
+    cap_add:
+       - SYS_ADMIN
+
+  router:
+    image: router
+    networks:
+        dns-net:
+            ipv4_address: 10.10.10.8
+        wan-net:
+    cap_add:
+        - SYS_ADMIN
+    privileged: true 
+        
+networks:
+  dns-net:
+    external:
+      name: dns-net
+  wan-net:
+    driver: bridge
+
+volumes:
+  base-datos-vol:
+    external: true
+
+  raid-vol:
+    external: true
